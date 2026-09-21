@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Files</title>
+<style>
+  :root{
+    --chrome:#cfcac0;
+    --face:#e7e3da;
+    --paper:#fbfaf6;
+    --ink:#1c1a17;
+    --dim:#6c665c;
+    --line:#a8a296;
+    --sel:#2f5d8a;
+    --hi:#ffffff;
+    --lo:#8e8880;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *,*::before,*::after{box-sizing:inherit}
+
+  body{
+    margin:0;
+    background:var(--chrome);
+    color:var(--ink);
+    font:13px/1.45 Tahoma,Verdana,Geneva,"DejaVu Sans",sans-serif;
+    padding:18px 14px 40px;
+  }
+
+  .window{
+    max-width:880px;
+    margin:0 auto;
+    background:var(--face);
+    border-top:2px solid var(--hi);
+    border-left:2px solid var(--hi);
+    border-right:2px solid var(--lo);
+    border-bottom:2px solid var(--lo);
+  }
+
+  .titlebar{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    padding:6px 10px;
+    background:var(--sel);
+    color:#fff;
+  }
+  .titlebar h1{font-size:13px;font-weight:700;margin:0;letter-spacing:.02em}
+  .titlebar span{font-size:11px;color:#c6d8e9}
+
+  .toolbar{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:8px;
+    padding:8px 10px;
+    border-bottom:1px solid var(--line);
+  }
+  .crumbs{flex:1 1 220px;min-width:0;font-size:12px;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .crumbs button{
+    background:none;border:0;padding:0 1px;font:inherit;color:var(--sel);
+    text-decoration:underline;cursor:pointer;
+  }
+  .crumbs .here{color:var(--ink)}
+
+  input[type=search]{
+    font:inherit;padding:3px 6px;width:170px;
+    background:var(--paper);color:var(--ink);
+    border-top:1px solid var(--lo);border-left:1px solid var(--lo);
+    border-right:1px solid var(--hi);border-bottom:1px solid var(--hi);
+  }
+  :focus-visible{outline:2px solid var(--sel);outline-offset:1px}
+
+  .scroll{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;background:var(--paper);min-width:420px}
+  th,td{text-align:left;padding:5px 10px;white-space:nowrap}
+  th{
+    position:sticky;top:0;
+    background:var(--face);
+    border-bottom:1px solid var(--line);
+    font-weight:700;font-size:12px;
+    cursor:pointer;
+  }
+  th.num,td.num{text-align:right}
+  th span{color:var(--dim);font-weight:400}
+  tbody tr:nth-child(even){background:#f3f1ea}
+  tbody tr:hover{background:#e3ecf5}
+  td.name{white-space:normal;word-break:break-word;min-width:180px}
+  td.name a,td.name button{
+    color:var(--sel);font:inherit;background:none;border:0;padding:0;
+    text-decoration:none;cursor:pointer;text-align:left;
+  }
+  td.name a:hover,td.name button:hover{text-decoration:underline}
+  .icon{display:inline-block;width:1.15em;color:var(--dim)}
+  .desc{display:block;color:var(--dim);font-size:11px}
+  td.size,td.date{color:var(--dim);font-size:12px}
+  .dl{
+    display:inline-block;padding:1px 8px;font-size:11px;color:var(--ink);
+    background:var(--face);text-decoration:none;
+    border-top:1px solid var(--hi);border-left:1px solid var(--hi);
+    border-right:1px solid var(--lo);border-bottom:1px solid var(--lo);
+  }
+  .dl:active{border-color:var(--lo) var(--hi) var(--hi) var(--lo)}
+
+  .statusbar{
+    display:flex;flex-wrap:wrap;gap:6px 14px;justify-content:space-between;
+    padding:6px 10px;border-top:1px solid var(--line);
+    font-size:11px;color:var(--dim);
+  }
+  .note{padding:26px 14px;text-align:center;color:var(--dim);background:var(--paper)}
+  .note.bad{color:#8a2f2f}
+
+  @media (max-width:560px){
+    .date{display:none}
+    body{padding:0 0 30px}
+    .window{border-width:0 0 2px}
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .pulse{animation:pulse .6s ease-out}
+    @keyframes pulse{from{background:#dbe7f4}to{background:transparent}}
+  }
+</style>
+</head>
+<body>
+
+<div class="window">
+  <div class="titlebar">
+    <h1>Files</h1>
+    <span id="count"></span>
+  </div>
+
+  <div class="toolbar">
+    <nav class="crumbs" id="crumbs" aria-label="Folder path"></nav>
+    <input type="search" id="q" placeholder="Filter by name" aria-label="Filter by name">
+  </div>
+
+  <div class="scroll">
+    <table>
+      <thead>
+        <tr>
+          <th data-sort="name" scope="col">Name</th>
+          <th data-sort="modified" class="date" scope="col">Date modified</th>
+          <th data-sort="size" class="num" scope="col">Size</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+
+  <div id="note" class="note">Loading…</div>
+
+  <div class="statusbar">
+    <span id="stamp"></span>
+    <span id="next"></span>
+  </div>
+</div>
+
+<script>
+const REFRESH_MS = 5 * 60 * 1000;
+
+let all = [];
+let generated = null;
+let here = [];                       // current folder path
+let sort = { key: 'name', dir: 1 };
+let nextAt = Date.now() + REFRESH_MS;
+
+const $ = (id) => document.getElementById(id);
+
+function bytes(n) {
+  if (n === null || n === undefined) return '';
+  const u = ['B', 'KB', 'MB', 'GB', 'TB'];
+  let i = 0;
+  while (n >= 1024 && i < u.length - 1) { n /= 1024; i++; }
+  return (i === 0 ? n : n.toFixed(n < 10 ? 1 : 0)) + ' ' + u[i];
+}
+
+function when(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  return isNaN(d) ? '' : d.toLocaleString([], {
+    year: 'numeric', month: 'short', day: '2-digit',
+    hour: '2-digit', minute: '2-digit'
+  });
+}
+
+function samePath(a, b) {
+  return a.length === b.length && a.every((v, i) => v === b[i]);
+}
+
+async function load(flash) {
+  try {
+    const res = await fetch('files.json?t=' + Date.now(), { cache: 'no-store' });
+    if (!res.ok) throw new Error(res.status);
+    const data = await res.json();
+    all = data.files || [];
+    generated = data.generated || null;
+    $('note').className = 'note';
+    render(flash);
+  } catch (err) {
+    $('rows').innerHTML = '';
+    $('note').className = 'note bad';
+    $('note').textContent = 'Could not load the file list. It will try again shortly.';
+    $('note').hidden = false;
+  }
+  nextAt = Date.now() + REFRESH_MS;
+}
+
+function render(flash) {
+  const q = $('q').value.trim().toLowerCase();
+  let rows = all.filter((f) => samePath(f.path || [], here));
+  if (q) rows = all.filter((f) => !f.folder && f.name.toLowerCase().includes(q));
+
+  rows.sort((a, b) => {
+    if (a.folder !== b.folder) return a.folder ? -1 : 1;
+    let out;
+    if (sort.key === 'size') out = (a.size || 0) - (b.size || 0);
+    else if (sort.key === 'modified') out = new Date(a.modified || 0) - new Date(b.modified || 0);
+    else out = a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' });
+    return out * sort.dir;
+  });
+
+  $('rows').innerHTML = rows.map((f) => {
+    const name = escapeHtml(f.name);
+    const label = f.folder
+      ? `<button type="button" data-open="${name}"><span class="icon">▸</span>${name}</button>`
+      : (f.url
+          ? `<a href="${escapeHtml(f.url)}"><span class="icon">·</span>${name}</a>`
+          : `<span><span class="icon">·</span>${name}</span>`);
+    const desc = f.description ? `<span class="desc">${escapeHtml(f.description)}</span>` : '';
+    const dl = !f.folder && f.url ? `<a class="dl" href="${escapeHtml(f.url)}">Download</a>` : '';
+    return `<tr>
+      <td class="name">${label}${desc}</td>
+      <td class="date">${when(f.modified)}</td>
+      <td class="size num">${f.folder ? '' : bytes(f.size)}</td>
+      <td class="num">${dl}</td>
+    </tr>`;
+  }).join('');
+
+  if (flash) {
+    $('rows').classList.remove('pulse');
+    void $('rows').offsetWidth;
+    $('rows').classList.add('pulse');
+  }
+
+  $('note').hidden = rows.length > 0;
+  if (!rows.length) {
+    $('note').textContent = q ? 'Nothing matches that name.' : 'This folder is empty.';
+  }
+
+  const files = all.filter((f) => !f.folder).length;
+  $('count').textContent = files + (files === 1 ? ' file' : ' files');
+  $('stamp').textContent = generated ? 'List updated ' + when(generated) : '';
+  crumbs();
+  tick();
+}
+
+function crumbs() {
+  const parts = ['<button type="button" data-crumb="0">Home</button>'];
+  here.forEach((name, i) => {
+    parts.push(' / ');
+    parts.push(i === here.length - 1
+      ? `<span class="here">${escapeHtml(name)}</span>`
+      : `<button type="button" data-crumb="${i + 1}">${escapeHtml(name)}</button>`);
+  });
+  $('crumbs').innerHTML = parts.join('');
+}
+
+function tick() {
+  const left = Math.max(0, nextAt - Date.now());
+  const m = Math.floor(left / 60000);
+  const s = Math.floor((left % 60000) / 1000);
+  $('next').textContent = `Checking again in ${m}:${String(s).padStart(2, '0')}`;
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, (c) =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+document.addEventListener('click', (e) => {
+  const open = e.target.closest('[data-open]');
+  if (open) { here = [...here, open.dataset.open]; $('q').value = ''; render(); return; }
+  const crumb = e.target.closest('[data-crumb]');
+  if (crumb) { here = here.slice(0, Number(crumb.dataset.crumb)); render(); }
+});
+
+document.querySelectorAll('th[data-sort]').forEach((th) => {
+  th.addEventListener('click', () => {
+    const key = th.dataset.sort;
+    sort = { key, dir: sort.key === key ? -sort.dir : 1 };
+    document.querySelectorAll('th[data-sort] span').forEach((s) => s.remove());
+    th.insertAdjacentHTML('beforeend', `<span> ${sort.dir === 1 ? '▲' : '▼'}</span>`);
+    render();
+  });
+});
+
+$('q').addEventListener('input', () => render());
+
+load();
+setInterval(() => load(true), REFRESH_MS);
+setInterval(tick, 1000);
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden && Date.now() > nextAt) load(true);
+});
+</script>
+</body>
+</html>
