@@ -1,4 +1,162 @@
 {
-  "files": [],
-  "generated": null
+  "files": [
+    {
+      "id": 2407502,
+      "name": "cli",
+      "folder": true,
+      "path": [
+        "cloud1",
+        "Python"
+      ],
+      "size": null,
+      "extension": null,
+      "modified": "2026-09-21T16:33:10.000000Z",
+      "description": null,
+      "url": null
+    },
+    {
+      "id": 2348908,
+      "name": "cloud1",
+      "folder": true,
+      "path": [],
+      "size": null,
+      "extension": null,
+      "modified": "2026-09-21T16:33:12.000000Z",
+      "description": null,
+      "url": null
+    },
+    {
+      "id": 2407501,
+      "name": "Python",
+      "folder": true,
+      "path": [
+        "cloud1"
+      ],
+      "size": null,
+      "extension": null,
+      "modified": "2026-09-21T16:33:12.000000Z",
+      "description": null,
+      "url": null
+    },
+    {
+      "id": 2407509,
+      "name": "ref",
+      "folder": true,
+      "path": [
+        "cloud1",
+        "Python"
+      ],
+      "size": null,
+      "extension": null,
+      "modified": "2026-09-21T16:33:12.000000Z",
+      "description": null,
+      "url": null
+    },
+    {
+      "id": 2407510,
+      "name": "exercise-2.pdf",
+      "folder": false,
+      "path": [
+        "cloud1",
+        "Python",
+        "ref"
+      ],
+      "size": 427818,
+      "extension": "pdf",
+      "modified": "2026-09-21T16:33:26.000000Z",
+      "description": null,
+      "url": "https://uploadg.com/drive/s/WNDWybGhgfYdoAFGXUqUjYuKaEv4Ji"
+    },
+    {
+      "id": 2407503,
+      "name": "exp 1.py",
+      "folder": false,
+      "path": [
+        "cloud1",
+        "Python",
+        "cli"
+      ],
+      "size": 244,
+      "extension": "py",
+      "modified": "2026-09-21T16:33:25.000000Z",
+      "description": null,
+      "url": "https://uploadg.com/drive/s/RZOKAOb7Ubmx2Ks83G0AXvRzNdsH6M"
+    },
+    {
+      "id": 2407504,
+      "name": "exp 2.py",
+      "folder": false,
+      "path": [
+        "cloud1",
+        "Python",
+        "cli"
+      ],
+      "size": 363,
+      "extension": "py",
+      "modified": "2026-09-21T16:33:25.000000Z",
+      "description": null,
+      "url": "https://uploadg.com/drive/s/Uy1esNeu71OWjfXMHxXBR6o0jjBm2K"
+    },
+    {
+      "id": 2407505,
+      "name": "exp 3.py",
+      "folder": false,
+      "path": [
+        "cloud1",
+        "Python",
+        "cli"
+      ],
+      "size": 156,
+      "extension": "py",
+      "modified": "2026-09-21T16:33:25.000000Z",
+      "description": null,
+      "url": "https://uploadg.com/drive/s/guaEYqJ5UnwcXNpbzpQqLtbwGNmRTR"
+    },
+    {
+      "id": 2407506,
+      "name": "exp 4.py",
+      "folder": false,
+      "path": [
+        "cloud1",
+        "Python",
+        "cli"
+      ],
+      "size": 1159,
+      "extension": "py",
+      "modified": "2026-09-21T16:33:25.000000Z",
+      "description": null,
+      "url": "https://uploadg.com/drive/s/RRl8ghiUF70sjpEVhyqQNrdxo6Puen"
+    },
+    {
+      "id": 2407507,
+      "name": "exp 5.py",
+      "folder": false,
+      "path": [
+        "cloud1",
+        "Python",
+        "cli"
+      ],
+      "size": 410,
+      "extension": "py",
+      "modified": "2026-09-21T16:33:25.000000Z",
+      "description": null,
+      "url": "https://uploadg.com/drive/s/8J0Cx2yMdcH9otsN1L8HbGvUOHVpv4"
+    },
+    {
+      "id": 2407508,
+      "name": "exp 6.py",
+      "folder": false,
+      "path": [
+        "cloud1",
+        "Python",
+        "cli"
+      ],
+      "size": 127,
+      "extension": "py",
+      "modified": "2026-09-21T16:33:25.000000Z",
+      "description": null,
+      "url": "https://uploadg.com/drive/s/GMABxBHfwr7HPu647huj8uIowT04O3"
+    }
+  ],
+  "generated": "2026-09-21T17:11:36.723Z"
 }
